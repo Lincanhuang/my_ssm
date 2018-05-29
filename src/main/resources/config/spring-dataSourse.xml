@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+    xmlns:jee="http://www.springframework.org/schema/jee"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+        			http://www.springframework.org/schema/beans/spring-beans.xsd 
+                    http://www.springframework.org/schema/context   
+                    http://www.springframework.org/schema/context/spring-context.xsd   
+                    http://www.springframework.org/schema/mvc  
+                    http://www.springframework.org/schema/mvc/spring-mvc.xsd 
+                    http://www.springframework.org/schema/tx  
+                    http://www.springframework.org/schema/tx/spring-tx.xsd 
+                    http://www.springframework.org/schema/aop 
+                    http://www.springframework.org/schema/aop/spring-aop.xsd
+                    http://www.springframework.org/schema/data/jpa
+                    http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+                    http://www.springframework.org/schema/jee
+                    http://www.springframework.org/schema/jee/spring-jee.xsd" >
+    <!-- 引入jdbc配置文件 -->
+<!-- <context:component-scan base-package="system.service" /> -->
+<context:component-scan base-package="system.**">   
+    <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" /> 
+</context:component-scan>
+<jpa:repositories base-package="system.dao" transaction-manager-ref="transactionManager" entity-manager-factory-ref="entityManagerFactory"/>
+<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+	<property name="dataSource" ref="dataSource" />
+	<property name="packagesToScan" value="system.entity" />
+	<property name="jpaVendorAdapter" ref="jpaVendorAdapter" />
+	<property name="jpaProperties">
+            <props>
+                <prop key="hibernate.format_sql">true</prop>
+            </props>
+     </property>
+</bean>
+<bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+    	<property name="database" value="MYSQL" />
+    	<property name="showSql" value="true"/>
+    	<property name="generateDdl" value="true" />
+    </bean>
+ <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+ 	<property name="dataSource" ref="dataSource"/>
+ 	<property name="entityManagerFactory" ref="entityManagerFactory"/>
+ </bean>
+ <tx:annotation-driven transaction-manager="transactionManager"/>  
+<!-- 		 使用annotation定义事务 事物可以使用注解@Transactional，也可以使用aop方式 -->
+<aop:aspectj-autoproxy />
+
+<!-- 		 使用annotation定义事务 事物可以使用注解@Transactional，也可以使用aop方式 -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+    
+     <!-- 配置事务通知属性 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <!-- 定义事务传播属性 -->
+        <tx:attributes>
+            <tx:method name="insert*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="upd*" propagation="REQUIRED"/>
+            <tx:method name="edit*" propagation="REQUIRED"/>
+            <tx:method name="save*" propagation="REQUIRED"/>
+            <tx:method name="add*" propagation="REQUIRED" read-only="false"/>
+            <tx:method name="new*" propagation="REQUIRED"/>
+            <tx:method name="set*" propagation="REQUIRED"/>
+            <tx:method name="remove*" propagation="REQUIRED"/>
+            <tx:method name="delete*" propagation="REQUIRED"/>
+            <tx:method name="del*" propagation="REQUIRED"/>
+            <tx:method name="change*" propagation="REQUIRED"/>
+            <tx:method name="check*" propagation="REQUIRED"/>
+            <tx:method name="get*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="search*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="find*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="load*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="*" propagation="REQUIRED" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+
+	<aop:config>  
+<!-- 	第一个"*"表示返回类型 , 第一个".."表示子包  第二个星表示类，第三个星表示方法，第二个".."表示方法参数 -->
+	    <aop:pointcut id="testService" expression="execution (* system.service..*Service.*(..))"/>  
+	    <aop:advisor advice-ref="txAdvice" pointcut-ref="testService"/>  
+	</aop:config>
+	
+
+<beans profile="test">
+ <context:property-placeholder location="classpath:properties/JDBC.properties" ignore-unresolvable="true" />
+<!-- 		<bean id="propertyConfigurer"  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> -->
+<!-- 	        <property name="location" value="classpath:properties/JDBC.properties" /> -->
+<!-- 	    </bean> -->
+	    	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">   
+       			  <!-- 基本属性 url、user、password -->
+		      <property name="url" value="${url}" />
+		      <property name="username" value="${username}" />
+		      <property name="password" value="${password}" />
+		        
+		      <!-- 配置初始化大小、最小、最大 -->
+		      <property name="initialSize" value="1" />
+		      <property name="minIdle" value="1" /> 
+		      <property name="maxActive" value="20" />
+		   
+		      <!-- 配置获取连接等待超时的时间 -->
+		      <property name="maxWait" value="60000" />
+		   
+		      <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		      <property name="timeBetweenEvictionRunsMillis" value="60000" />
+		   
+		      <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		      <property name="minEvictableIdleTimeMillis" value="300000" />
+		    
+		      <property name="validationQuery" value="SELECT 'x'" />
+		      <property name="testWhileIdle" value="true" />
+		      <property name="testOnBorrow" value="false" />
+		      <property name="testOnReturn" value="false" />
+		   
+		      <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+		      <property name="poolPreparedStatements" value="false" />
+		      <property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
+		   
+		      <!-- 配置监控统计拦截的filters -->
+		      <property name="filters" value="stat,wall" />
+		  </bean>
+    </beans>
+    <beans profile="dev">
+   		<jee:jndi-lookup id="dataSource" jndi-name="jdbc/mysql" resource-ref="true"></jee:jndi-lookup>
+    </beans>
+    
+    </beans>
