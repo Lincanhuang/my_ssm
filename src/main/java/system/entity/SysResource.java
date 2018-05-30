@@ -1,32 +1,20 @@
-/**
- * MIT License
- * Copyright (c) 2018 yadong.zhang
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
 package system.entity;
 
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-import javax.persistence.Transient;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import framework.entity.AbstractEntity;
 
-//@Entity
-//@Table(name = "sysResource")
+@Entity
+@Table(name = "sys_resource")
 public class SysResource extends AbstractEntity {
 	/**
 	 * 
@@ -37,21 +25,29 @@ public class SysResource extends AbstractEntity {
 	private String type;
 	private String url;
 	private String permission;
-	private Long parentId;
+	
 	private Integer sort;
 	private Boolean external;
 	private Boolean available;
 	private String icon;
-
-	@Transient
-	private String checked;
-	@Transient
+	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	@JoinColumn(name="parentId")
 	private SysResource parent;
-	@Transient
-	private List<SysResource> nodes;
+    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+    @JoinColumn(name="parentId")
+	Set<SysResource> children= new LinkedHashSet<SysResource>();
+	
+    public SysResource() {
+		super();
+	}
+	public SysResource(String name) {
+		super();
+		setName(name);
+	}
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -78,14 +74,6 @@ public class SysResource extends AbstractEntity {
 
 	public void setPermission(String permission) {
 		this.permission = permission;
-	}
-
-	public Long getParentId() {
-		return parentId;
-	}
-
-	public void setParentId(Long parentId) {
-		this.parentId = parentId;
 	}
 
 	public Integer getSort() {
@@ -120,14 +108,6 @@ public class SysResource extends AbstractEntity {
 		this.icon = icon;
 	}
 
-	public String getChecked() {
-		return checked;
-	}
-
-	public void setChecked(String checked) {
-		this.checked = checked;
-	}
-
 	public SysResource getParent() {
 		return parent;
 	}
@@ -135,13 +115,19 @@ public class SysResource extends AbstractEntity {
 	public void setParent(SysResource parent) {
 		this.parent = parent;
 	}
-
-	public List<SysResource> getNodes() {
-		return nodes;
+	
+	public Set<SysResource> getChildren() {  
+	        return children;  
 	}
-
-	public void setNodes(List<SysResource> nodes) {
-		this.nodes = nodes;
+	
+	public void setChildren(Set<SysResource> children) {
+		this.children = children;
+	}
+	
+	public Long getParentId() {
+		if(parent == null)
+			return null;
+		return parent.getId();
 	}
 
 }

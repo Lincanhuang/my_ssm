@@ -7,5 +7,4 @@ import system.entity.SysResource;
 @Repository
 public interface SysResourceRepository  extends JpaRepository<SysResource, Long>{
 	  
-	
 }
