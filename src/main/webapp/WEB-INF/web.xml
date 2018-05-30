@@ -8,11 +8,6 @@
     <display-name>myapp</display-name>
 
     <!-- web.xml的加载过程是context-param >> listener  >> fileter  >> servlet -->
-<context-param>
-    <param-name>webAppRootKey</param-name>
-    <param-value>app1.root</param-value>
-</context-param>
-
     <!-- 配置Spring MVC加载的应用上下文配置文件，设定web应用的context环境参数，WEB项目所有部分都将共享这个上下文 -->
     <!-- param-name在JSP网页中使用${initParam.param_name}获得，在Servlet则使用String param_name=getServletContext().getInitParamter("param_name"); -->
     <context-param>
@@ -22,6 +17,10 @@
         <param-value>classpath:config/spring-dataSourse.xml</param-value>
     </context-param>
 <!-- 	为上下文设置默认的profile -->
+	<context-param>
+		<param-name>spring.profiles.active</param-name>
+		<param-value>test</param-value>
+	</context-param>
 	<context-param>
 		<param-name>spring.profiles.default</param-name>
 		<param-value>dev</param-value>
@@ -82,6 +81,8 @@
         <init-param><!--用来定义参数,可有多个init-param。在servlet类中通过getInitParamenter(String name)方法访问初始化参数    -->  
             <param-name>spring.profiles.default</param-name>
             <param-value>dev</param-value>
+        </init-param>
+        <init-param>
             <param-name>contextConfigLocation</param-name>  <!--参数名称-->  
             <param-value>classpath:config/spring-mvc.xml</param-value> <!--参数值-->  
         </init-param>

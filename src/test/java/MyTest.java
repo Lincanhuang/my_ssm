@@ -8,30 +8,26 @@ import java.util.concurrent.FutureTask;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import system.entity.User;
-import system.service.UserService;
 @ContextConfiguration(value= {"classpath:config/spring-dataSourse.xml"}) 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
 @Rollback(value = true)
 public class MyTest {
 	
-	@Autowired
-	private UserService userService;
-	 
+//	@Autowired
+//	private UserService userService;
+//	 
 	@Test
 //	@Transactional(readOnly =false)
 	public void getUser() throws Exception {
-		User user = new User();
-		user.setName("lin");
-		user.setPasswd("kfljsdfkajjfkajhkhja");
-		userService.addUser(user);
+//		User user = new User();
+//		user.setName("lin");
+//		user.setPasswd("kfljsdfkajjfkajhkhja");
+//		userService.addUser(user);
 		
 	}
 	
