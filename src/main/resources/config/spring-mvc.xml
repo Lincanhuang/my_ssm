@@ -111,6 +111,7 @@
     <bean id="multipartResolver"
         class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
     </bean>
+    
 <!--    异常处理器 -->
 <!--     <bean id="myExceptionHandler" class="my.utils.ExceptHandler"> -->
 <!--     	<property name="jsonMessageConverter"  ref="mappingJacksonHttpMessageConverter" />  -->

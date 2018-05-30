@@ -2,20 +2,20 @@ package system.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import system.dao.ResourceRepository;
-import system.entity.Resource;
+import system.dao.SysResourceRepository;
+import system.entity.SysResource;
 
 
 public class ResourceService {
 	@Autowired
-	private ResourceRepository resourceRepository;
+	private SysResourceRepository sysResourceRepository;
 	
-	public Resource save(Resource resource) {
-		resource = resourceRepository.save(resource);
+	public SysResource save(SysResource resource) {
+		resource = sysResourceRepository.save(resource);
 		return resource;
 	}
 	
-	public void delete(Resource resource) {
-		resourceRepository.deleteById(resource.getId());
+	public void delete(SysResource resource) {
+		sysResourceRepository.deleteById(resource.getId());
 	}
 }

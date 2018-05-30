@@ -28,6 +28,7 @@
     <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" /> 
 </context:component-scan>
 <jpa:repositories base-package="system.dao" transaction-manager-ref="transactionManager" entity-manager-factory-ref="entityManagerFactory"/>
+<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
 <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 	<property name="dataSource" ref="dataSource" />
 	<property name="packagesToScan" value="system.entity" />
@@ -35,6 +36,7 @@
 	<property name="jpaProperties">
             <props>
                 <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.dialect.storage_engine">org.hibernate.dialect.MySQL5InnoDBDialect</prop>   
             </props>
      </property>
 </bean>
@@ -87,10 +89,10 @@
 	
 
 <beans profile="test">
- <context:property-placeholder location="classpath:properties/JDBC.properties" ignore-unresolvable="true" />
-<!-- 		<bean id="propertyConfigurer"  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> -->
-<!-- 	        <property name="location" value="classpath:properties/JDBC.properties" /> -->
-<!-- 	    </bean> -->
+<!--  <context:property-placeholder location="classpath:properties/JDBC.properties" ignore-unresolvable="true" /> -->
+		<bean id="propertyConfigurer"  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	        <property name="location" value="classpath:properties/JDBC.properties" />
+	    </bean>
 	    	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">   
        			  <!-- 基本属性 url、user、password -->
 		      <property name="url" value="${url}" />
