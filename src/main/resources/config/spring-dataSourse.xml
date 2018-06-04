@@ -35,14 +35,16 @@
 	<property name="jpaVendorAdapter" ref="jpaVendorAdapter" />
 	<property name="jpaProperties">
             <props>
+                <prop key="hibernate.show_sql">false</prop>
                 <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.use_sql_comments">true</prop>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>   
             </props>
      </property>
 </bean>
 <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
     	<property name="database" value="MYSQL" />
-    	<property name="showSql" value="true"/>
+<!--     	<property name="showSql" value="true"/> -->
     	<property name="generateDdl" value="true" />
     </bean>
  <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">

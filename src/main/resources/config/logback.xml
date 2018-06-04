@@ -36,6 +36,9 @@
   <logger name="org.springframework.remoting" level="WARN"/>
   <logger name="org.springframework.scheduling.quartz" level="WARN"/>
   <logger name="org.springframework.data.jpa" level="DEBUG"/>
+  <logger name="org.hibernate.type" level="ALL"/>
+  <logger name="org.hibernate.engine.QueryParameters" level="ALL"/>
+  <logger name="org.hibernate.engine.query.HQLQueryPlan" level="ALL"/>
   <logger name="org.cometd" level="WARN"/>
   <logger name="ch.qos.logback" level="WARN"/>
   <logger name="com.springapp.mvc" level="DEBUG"/>
