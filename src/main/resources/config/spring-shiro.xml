@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+        			http://www.springframework.org/schema/beans/spring-beans.xsd" >
+<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+	<property name="securityManager">
+		<bean class="org.apache.shiro.mgt.DefaultSecurityManager">
+<!-- 			<property name="realm"> -->
+<!-- 			</property> -->
+<!-- 			<property name="cacheManager"></property> -->
+			
+		</bean>
+	</property>
+	<property name="loginUrl" value=""/>
+	<property name="successUrl" value=""/>
+	<property name="unauthorizedUrl" value=""/>
+</bean>
+</beans>
