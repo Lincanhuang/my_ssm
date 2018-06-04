@@ -58,13 +58,12 @@ public class MyTest {
 //	@Test
 	public void dele() throws Exception {
 		SysResource parent = new SysResource();
-		parent.setId(42L);
+		parent.setId(33L);
 		sysResourceService.delete(parent);
 	}
 	@Test
 	public void select() {
-		SysResource parent =sysResourceService.select(48L);
-		System.out.println(parent.getName());
+		sysResourceService.listByUserId(1L);
 	}
 	public void join() {
 		 ExecutorService executor = Executors.newFixedThreadPool(8);

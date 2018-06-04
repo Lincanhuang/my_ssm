@@ -7,6 +7,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -30,13 +32,18 @@ public class SysResource extends AbstractEntity {
 	private Boolean external;
 	private Boolean available;
 	private String icon;
-	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	@ManyToOne(cascade= {CascadeType.DETACH, CascadeType.REFRESH,CascadeType.PERSIST,CascadeType.REMOVE},fetch=FetchType.EAGER)
 	@JoinColumn(name="parentId")
 	private SysResource parent;
-    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+    @OneToMany(cascade= {CascadeType.DETACH,CascadeType.PERSIST,CascadeType.REMOVE},fetch=FetchType.EAGER)
     @JoinColumn(name="parentId")
-	Set<SysResource> children= new LinkedHashSet<SysResource>();
+	Set<SysResource> children;
 	
+    @ManyToMany(cascade = CascadeType.PERSIST)
+	@JoinTable(name = "sys_role_resource",
+          joinColumns = {@JoinColumn(name = "resourceId")},
+          inverseJoinColumns = {@JoinColumn(name = "roleId")})
+	private Set<SysRole> sysRoles = new LinkedHashSet<>();
     public SysResource() {
 		super();
 	}
