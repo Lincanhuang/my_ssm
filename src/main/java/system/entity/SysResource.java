@@ -27,15 +27,12 @@ public class SysResource extends AbstractEntity {
 	private String type;
 	private String url;
 	private String permission;
-	
 	private Integer sort;
 	private Boolean external;
 	private Boolean available;
 	private String icon;
-	@ManyToOne(cascade= {CascadeType.DETACH, CascadeType.REFRESH,CascadeType.PERSIST,CascadeType.REMOVE},fetch=FetchType.EAGER)
-	@JoinColumn(name="parentId")
-	private SysResource parent;
-    @OneToMany(cascade= {CascadeType.DETACH,CascadeType.PERSIST,CascadeType.REMOVE},fetch=FetchType.EAGER)
+	private Long parentId;
+    @OneToMany(cascade= {CascadeType.DETACH,CascadeType.PERSIST,CascadeType.REMOVE},fetch=FetchType.LAZY)
     @JoinColumn(name="parentId")
 	Set<SysResource> children;
 	
@@ -115,13 +112,13 @@ public class SysResource extends AbstractEntity {
 		this.icon = icon;
 	}
 
-	public SysResource getParent() {
-		return parent;
-	}
-
-	public void setParent(SysResource parent) {
-		this.parent = parent;
-	}
+//	public SysResource getParent() {
+//		return parent;
+//	}
+//
+//	public void setParent(SysResource parent) {
+//		this.parent = parent;
+//	}
 	
 	public Set<SysResource> getChildren() {  
 	        return children;  
@@ -132,9 +129,10 @@ public class SysResource extends AbstractEntity {
 	}
 	
 	public Long getParentId() {
-		if(parent == null)
-			return null;
-		return parent.getId();
+		 return parentId;  
+	}
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
 	}
 
 }
