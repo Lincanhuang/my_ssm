@@ -1,34 +1,16 @@
-/**
- * MIT License
- * Copyright (c) 2018 yadong.zhang
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
 package framework.shiro.realm;
 
-import system.entity.SysResource;
-import system.entity.SysRole;
-import system.entity.SysUser;
-import system.entity.UserStatusEnum;
-import system.service.SysResourceService;
-import system.service.SysRoleService;
-import system.service.SysUserService;
+import java.util.List;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.*;
+import javax.annotation.Resource;
+
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -37,8 +19,13 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.Resource;
-import java.util.List;
+import system.entity.SysResource;
+import system.entity.SysRole;
+import system.entity.SysUser;
+import system.entity.UserStatusEnum;
+import system.service.SysResourceService;
+import system.service.SysRoleService;
+import system.service.SysUserService;
 
 public class ShiroRealm extends AuthorizingRealm {
 
@@ -55,7 +42,7 @@ public class ShiroRealm extends AuthorizingRealm {
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		// 获取用户的输入的账号.
-		String username = (String) token.getPrincipal();
+		String username = token.getPrincipal().toString();
 		SysUser user = sysUserService.getByUserName(username);
 		if (user == null) {
 			throw new UnknownAccountException("账号不存在！");
@@ -65,20 +52,24 @@ public class ShiroRealm extends AuthorizingRealm {
 		}
 
 		// principal参数使用用户Id，方便动态刷新用户权限
-		return new SimpleAuthenticationInfo(user.getId(), user.getPassword(), ByteSource.Util.bytes(username),
-				getName());
+		SimpleAuthenticationInfo simpleAuthenticationInfo = null;
+		simpleAuthenticationInfo = new SimpleAuthenticationInfo(user.getId(), user.getPassword().toCharArray(), getName());
+		simpleAuthenticationInfo.setCredentialsSalt(ByteSource.Util.bytes(user.getSalt()));
+		return simpleAuthenticationInfo;
 	}
 
 	/**
 	 * 权限认证，为当前登录的Subject授予角色和权限（角色的权限信息集合）
 	 */
 	@Override
-	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
+	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+		 if (principals == null) {
+	        throw new AuthorizationException("PrincipalCollection method argument cannot be null.");
+        }
+		 Long userId = (Long) getAvailablePrincipal(principals);
 		// 权限信息对象info,用来存放查出的用户的所有的角色（role）及权限（permission）
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-
-		Long userId = (Long) SecurityUtils.getSubject().getPrincipal();
-
+//		userId = (Long) SecurityUtils.getSubject().getPrincipal();
 		// 赋予角色
 		List<SysRole> roleList = sysRoleService.listRolesByUserId(userId);
 		for (SysRole role : roleList) {
@@ -98,5 +89,4 @@ public class ShiroRealm extends AuthorizingRealm {
 		}
 		return info;
 	}
-
 }
