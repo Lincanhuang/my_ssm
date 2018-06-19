@@ -37,6 +37,7 @@ public class SysUser extends AbstractEntity {
 	private Integer loginCount;
 	private String remark;
 	private Integer status;
+	private String salt;
 
 	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(name = "sys_user_role",
@@ -180,5 +181,12 @@ public class SysUser extends AbstractEntity {
 
 	public void setRoles(Set<SysRole> roles) {
 		this.roles = roles;
+	}
+
+	public String getSalt() {
+		return salt;
+	}
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
 }

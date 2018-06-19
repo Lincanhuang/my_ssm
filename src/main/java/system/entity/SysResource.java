@@ -9,7 +9,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -112,14 +111,6 @@ public class SysResource extends AbstractEntity {
 		this.icon = icon;
 	}
 
-//	public SysResource getParent() {
-//		return parent;
-//	}
-//
-//	public void setParent(SysResource parent) {
-//		this.parent = parent;
-//	}
-	
 	public Set<SysResource> getChildren() {  
 	        return children;  
 	}
