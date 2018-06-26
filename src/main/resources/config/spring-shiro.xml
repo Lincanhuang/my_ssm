@@ -8,15 +8,16 @@
         			 http://www.springframework.org/schema/util/spring-util.xsd ">
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
-		<property name="loginUrl" value="/u/login.shtml" />
+		<property name="loginUrl" value="/login" />
 			<property name="successUrl" value="/" />
 			<property name="unauthorizedUrl" value="/?login" />
 			
 	<!--	初始配置，现采用自定义	-->
-	<!--		<property name="filterChainDefinitions" >-->
-	<!--			<value>-->
-	<!--				/** = anon-->
-	<!--				/page/login.jsp = anon-->
+			<property name="filterChainDefinitions" >
+				<value>
+					/** = authc
+					/user/login = anon
+<!-- 					/page/login.jsp = anon -->
 	<!--				/page/register/* = anon-->
 	<!--				/page/index.jsp = authc-->
 	<!--				/page/addItem* = authc,roles[数据管理员]-->
@@ -24,19 +25,19 @@
 	<!--				/page/listItems* = authc,roleOR[数据管理员,普通用户]-->
 	<!--				/page/showItem* = authc,roleOR[数据管理员,普通用户]-->
 	<!--				/page/updateItem*=authc,roles[数据管理员]-->
-	<!--            </value>-->
-	<!--		</property>-->
+	           </value>
+			</property>
 		<!-- 读取初始自定义权限内容-->
-	      <property name="filterChainDefinitions" value="#{shiroManager.loadFilterChainDefinitions()}"/>   
-	      <property name="filters">
-	          <util:map>
-	             <entry key="login" value-ref="login"></entry>
-	             <entry key="role" value-ref="role"></entry>
-	             <entry key="simple" value-ref="simple"></entry>
-	             <entry key="permission" value-ref="permission"></entry>
-	             <entry key="kickout" value-ref="kickoutSessionFilter"></entry>
-	          </util:map>
-	      </property>
+<!-- 	      <property name="filterChainDefinitions" value="#{shiroManager.loadFilterChainDefinitions()}"/>    -->
+<!-- 	      <property name="filters"> -->
+<!-- 	          <util:map> -->
+<!-- 	             <entry key="login" value-ref="login"></entry> -->
+<!-- 	             <entry key="role" value-ref="role"></entry> -->
+<!-- 	             <entry key="simple" value-ref="simple"></entry> -->
+<!-- 	             <entry key="permission" value-ref="permission"></entry> -->
+<!-- 	             <entry key="kickout" value-ref="kickoutSessionFilter"></entry> -->
+<!-- 	          </util:map> -->
+<!-- 	      </property> -->
 	</bean>
 	
 	<!-- 安全管理器 -->
@@ -44,7 +45,7 @@
        <property name="realm" ref="realm" />
        <property name="sessionManager" ref="sessionManager"/>
        <property name="rememberMeManager" ref="rememberMeManager"/>
-       <property name="cacheManager" ref="customShiroCacheManager"/>
+<!--        <property name="cacheManager" ref="customShiroCacheManager"/> -->
    </bean>
    
    <bean id="realm" class="framework.shiro.realm.ShiroRealm">
@@ -61,17 +62,17 @@
 	 	<property name="sessionValidationInterval" value="1800000"/>  
 	 	 <!-- session 有效时间为半小时 （毫秒单位）-->  
 	<property name="globalSessionTimeout" value="1800000"/>
-	   <property name="sessionDAO" ref="customShiroSessionDAO"/>
+<!-- 	   <property name="sessionDAO" ref="customShiroSessionDAO"/> -->
 	   <!-- session 监听，可以多个。 -->
-	   <property name="sessionListeners">
-	       <list>
-	           <ref bean="customSessionListener"/>
-	       </list>
-	   </property>
+<!-- 	   <property name="sessionListeners"> -->
+<!-- 	       <list> -->
+<!-- 	           <ref bean="customSessionListener"/> -->
+<!-- 	       </list> -->
+<!-- 	   </property> -->
 	   <!-- 间隔多少时间检查，不配置是60分钟 -->	
-	  <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>
+<!-- 	  <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/> -->
 	  <!-- 是否开启 检测，默认开启 -->
-	  <property name="sessionValidationSchedulerEnabled" value="true"/>
+<!-- 	  <property name="sessionValidationSchedulerEnabled" value="true"/> -->
 	   <!-- 是否删除无效的，默认也是开启 -->
 <!-- 	  <property name="deleteInvalidSessions" value="true"/> -->
 		<!-- 会话Cookie模板 -->
@@ -92,9 +93,9 @@
 	     -->
 <!-- 	</bean> -->
 	<!-- custom shiro session listener -->
-	<bean id="customSessionListener" class="com.sojson.core.shiro.listenter.CustomSessionListener">
-	    <property name="shiroSessionRepository" ref="jedisShiroSessionRepository"/>
-	</bean>
+<!-- 	<bean id="customSessionListener" class="com.sojson.core.shiro.listenter.CustomSessionListener"> -->
+<!-- 	    <property name="shiroSessionRepository" ref="jedisShiroSessionRepository"/> -->
+<!-- 	</bean> -->
 	<!-- 用户信息记住我功能的相关配置 -->
 	<bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
 	    <constructor-arg value="v_v-re-baidu"/>
@@ -132,37 +133,37 @@
 <!-- 	     <property name="sessionManager" ref="sessionManager"/> -->
 <!-- 	</bean> -->
 	<!-- 用户缓存 -->
-	<bean id="customShiroCacheManager" class="com.sojson.core.shiro.cache.impl.CustomShiroCacheManager">
-	    <property name="shiroCacheManager" ref="jedisShiroCacheManager"/>
-	</bean>
+<!-- 	<bean id="customShiroCacheManager" class="com.sojson.core.shiro.cache.impl.CustomShiroCacheManager"> -->
+<!-- 	    <property name="shiroCacheManager" ref="jedisShiroCacheManager"/> -->
+<!-- 	</bean> -->
 	
 	<!-- shiro 缓存实现，对ShiroCacheManager，我是采用redis的实现 -->
-	<bean id="jedisShiroCacheManager" class="com.sojson.core.shiro.cache.impl.JedisShiroCacheManager">
-	    <property name="jedisManager" ref="jedisManager"/>
-	</bean>
+<!-- 	<bean id="jedisShiroCacheManager" class="com.sojson.core.shiro.cache.impl.JedisShiroCacheManager"> -->
+<!-- 	    <property name="jedisManager" ref="jedisManager"/> -->
+<!-- 	</bean> -->
 	<!-- redis 的缓存 -->
-	<bean id="jedisManager" class="com.sojson.core.shiro.cache.JedisManager">
-	    <property name="jedisPool" ref="jedisPool"/>
-	</bean>
+<!-- 	<bean id="jedisManager" class="com.sojson.core.shiro.cache.JedisManager"> -->
+<!-- 	    <property name="jedisPool" ref="jedisPool"/> -->
+<!-- 	</bean> -->
 	<!-- 静态注入，相当于调用SecurityUtils.setSecurityManager(securityManager) -->
 	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 	    <property name="staticMethod" value="org.apache.shiro.SecurityUtils.setSecurityManager"/>
 	    <property name="arguments" ref="securityManager"/>
 	</bean>
 	<!-- session 校验单个用户是否多次登录 -->
-	<bean id="kickoutSessionFilter"   class="com.sojson.core.shiro.filter.KickoutSessionFilter">  
-	    <property name="kickoutUrl" value="/u/login.shtml?kickout"/>  
-	</bean>  
+<!-- 	<bean id="kickoutSessionFilter"   class="com.sojson.core.shiro.filter.KickoutSessionFilter">   -->
+<!-- 	    <property name="kickoutUrl" value="/u/login.shtml?kickout"/>   -->
+<!-- 	</bean>   -->
 	<!-- 静态注入 jedisShiroSessionRepository-->
-	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-	    <property name="staticMethod" value="com.sojson.core.shiro.filter.KickoutSessionFilter.setShiroSessionRepository"/>
-	    <property name="arguments" ref="jedisShiroSessionRepository"/>
-	</bean>
+<!-- 	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"> -->
+<!-- 	    <property name="staticMethod" value="com.sojson.core.shiro.filter.KickoutSessionFilter.setShiroSessionRepository"/> -->
+<!-- 	    <property name="arguments" ref="jedisShiroSessionRepository"/> -->
+<!-- 	</bean> -->
 	
 	<!-- session 创建、删除、查询 -->
-	<bean id="jedisShiroSessionRepository" class="com.sojson.core.shiro.cache.JedisShiroSessionRepository" >
-		 <property name="jedisManager" ref="jedisManager"/>
-	</bean>
+<!-- 	<bean id="jedisShiroSessionRepository" class="com.sojson.core.shiro.cache.JedisShiroSessionRepository" > -->
+<!-- 		 <property name="jedisManager" ref="jedisManager"/> -->
+<!-- 	</bean> -->
 
 	<!--
 		自定义角色过滤器 支持多个角色可以访问同一个资源 eg:/home.jsp = authc,roleOR[admin,user]

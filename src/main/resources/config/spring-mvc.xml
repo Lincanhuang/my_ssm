@@ -44,7 +44,7 @@
     <!--     扫描指定包下的全部的标有@Component的类(包含子注解@Service,@Reposity等 )，并注册成bean 
     use-default-filters="false"不自动扫描所有，此时include-filter才有效果-->
 <!--    <context:component-scan base-package="system.**" /> -->
-    <context:component-scan base-package="system" use-default-filters="false" >
+    <context:component-scan base-package="system,common" use-default-filters="false" >
 <!--     包含 -->
     	<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 <!--     	排除 -->
@@ -77,12 +77,10 @@
     <bean id="cnManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
 		<property name="ignoreAcceptHeader" value="true" />
 		<property name="defaultContentType" value="text/html" />
-
 		<property name="mediaTypes">
 			<map>
 <!-- 				<entry key="html" value="text/html" /> -->
 				<entry key="json" value="application/json" />
-				<entry key="xls" value="application/vnd.ms-excel" />
 				<entry key="xml" value="application/xml" />
 			</map>
 		</property>
