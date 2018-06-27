@@ -17,10 +17,10 @@
         <param-value>classpath:config/spring-context.xml</param-value>
     </context-param>
 <!-- 	为上下文设置默认的profile -->
-	<context-param>
-		<param-name>spring.profiles.active</param-name>
-		<param-value>test</param-value>
-	</context-param>
+<!-- 	<context-param> -->
+<!-- 		<param-name>spring.profiles.active</param-name> -->
+<!-- 		<param-value>test</param-value> -->
+<!-- 	</context-param> -->
 	<context-param>
 		<param-name>spring.profiles.default</param-name>
 		<param-value>dev</param-value>
@@ -123,9 +123,9 @@
     </mime-mapping>
     
     
-    <error-page>  <!--将错误代码(Error Code)或异常(Exception)的种类对应到web应用资源路径-->  
-        <error-code>404</error-code>        <!--HTTP Error code,例如: 404、403--> 
-        <location>/error/404.html</location> <!--用来设置发生错误或异常时要显示的页面--> 
+    <error-page>  <!--  将错误代码(Error Code)或异常(Exception)的种类对应到web应用资源路径   -->
+        <error-code>404</error-code>      <!--    HTTP Error code,例如: 404、403  -->
+        <location>/error/404.html</location> <!-- 用来设置发生错误或异常时要显示的页面  -->
     </error-page>  
     <error-page>  
         <exception-type>java.lang.Exception</exception-type><!-- 设置可能会发生的java异常类型,例如:java.lang.Exception -->  

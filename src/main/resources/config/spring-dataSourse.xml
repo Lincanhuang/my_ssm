@@ -90,7 +90,7 @@
 	</aop:config>
 	
 
-<beans profile="test">
+<beans profile="dev">
 <!--  <context:property-placeholder location="classpath:properties/JDBC.properties" ignore-unresolvable="true" /> -->
 		<bean id="propertyConfigurer"  class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
 	        <property name="location" value="classpath:properties/JDBC.properties" />
@@ -128,7 +128,7 @@
 		      <property name="filters" value="stat,wall" />
 		  </bean>
     </beans>
-    <beans profile="dev">
+    <beans profile="pro">
    		<jee:jndi-lookup id="dataSource" jndi-name="jdbc/mysql" resource-ref="true"></jee:jndi-lookup>
     </beans>
     

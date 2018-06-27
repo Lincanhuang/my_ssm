@@ -32,9 +32,8 @@ public class UserLoginController {
 	 * @return
 	 */
 	@RequestMapping(value="login",method=RequestMethod.GET)
-	public String login(){
-		System.out.println("------------------");
-		return "user/login";
+	public ModelAndView login(){
+		return new ModelAndView("user/login");
 	}
 	/**
 	 * 注册跳转
@@ -42,8 +41,7 @@ public class UserLoginController {
 	 */
 	@RequestMapping(value="register",method=RequestMethod.GET)
 	public String register(){
-		System.out.println("------------------");
-		return "/user/login";
+		return "/user/register";
 	}
 	/**
 	 * 登录提交
@@ -55,6 +53,9 @@ public class UserLoginController {
 	@RequestMapping(value="submitLogin",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String,Object> submitLogin(SysUser entity,Boolean rememberMe,HttpServletRequest request){
+		if (rememberMe == null) {
+			rememberMe = false;
+		}
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		try {
