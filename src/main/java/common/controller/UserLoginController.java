@@ -4,7 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -13,10 +16,13 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import system.entity.SysUser;
 import system.service.SysUserService;
@@ -52,11 +58,10 @@ public class UserLoginController {
 	 */
 	@RequestMapping(value="submitLogin",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,Object> submitLogin(SysUser entity,Boolean rememberMe,HttpServletRequest request){
+	public Map<String, Object> submitLogin(SysUser entity,Boolean rememberMe,HttpServletRequest request,RedirectAttributes redirectAttributes){
 		if (rememberMe == null) {
 			rememberMe = false;
 		}
-		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		try {
 			UsernamePasswordToken upk = new UsernamePasswordToken(entity.getUsername(), entity.getPassword());
@@ -65,7 +70,7 @@ public class UserLoginController {
 			SecurityUtils.getSubject().getPrincipal();
 			resultMap .put("status", 200);
 			resultMap.put("message", "登录成功");
-			
+			redirectAttributes.addFlashAttribute("request",request.getParameterMap());
 			/**
 			 * shiro 获取登录之前的地址
 			 */
@@ -82,8 +87,8 @@ public class UserLoginController {
 			if(StringUtils.isBlank(url)){
 				url = request.getContextPath() + "/user/index.shtml";
 			}
-			//跳转地址
-			resultMap.put("back_url", url);
+			redirectAttributes.addFlashAttribute("back_url",url);
+			resultMap.put("url", url);
 		/**
 		 * 这里其实可以直接catch Exception，然后抛出 message即可，但是最好还是各种明细catch 好点。。
 		 */
@@ -94,6 +99,21 @@ public class UserLoginController {
 			resultMap.put("status", 500);
 			resultMap.put("message", "帐号或密码错误");
 		}
+		return resultMap;
+	}
+	
+	@RequestMapping(value="success",method= {RequestMethod.POST,RequestMethod.GET})
+	public void success(HttpServletRequest request, HttpServletResponse response) {
+		response.setContentType(request.getHeader("accept"));
+		response.setCharacterEncoding("UTF-8");
+		response.setHeader("Location", request.getParameter("back_url"));
+	}
+	
+	@RequestMapping(value="fail",method= {RequestMethod.POST,RequestMethod.GET})
+	@ResponseBody
+	public Map<String, Object> fail(ServletRequest request) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("back_url", request.getParameter("back_url"));
 		return resultMap;
 	}
 	
@@ -112,5 +132,9 @@ public class UserLoginController {
 			resultMap.put("status", 500);
 		}
 		return resultMap;
+	}
+	@RequestMapping(value="index",method =RequestMethod.GET)
+	public String index() {
+		return "index";
 	}
 }

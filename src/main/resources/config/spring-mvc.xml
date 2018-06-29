@@ -23,16 +23,17 @@
     <bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
         <property name="supportedMediaTypes">
             <list>
-                <value>text/html;charset=UTF-8</value>
+                <value>application/json;charset=UTF-8</value>
             </list>
         </property>
     </bean>
-
+	<bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter" />
     <!-- 启动SpringMVC的注解功能，完成请求和注解POJO的映射 -->
     <bean id="messageConverters" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
         <property name="messageConverters">
             <list>
                 <ref bean="mappingJacksonHttpMessageConverter" /> <!--                 JSON转换器 -->
+                <ref bean="stringHttpMessageConverter" />             
             </list>
         </property>
     </bean>
