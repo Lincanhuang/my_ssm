@@ -1,4 +1,5 @@
-<jsp:include page="include.jsp"/>
+<%@ page contentType="text/html;charset=UTF-8"%>
+<jsp:include page="../include.jsp"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,7 +34,7 @@
                                         <input name="rememberMe" type="checkbox" value="true"> Remember Me
                                     </label>
                                 </div>
-                                <input class="btn btn-lg btn-success btn-block" type="submit" value="Login">
+                                <input class="btn btn-lg btn-success btn-block" type="button" value="Login" onclick="longin()">
                             </fieldset>
                         </form>
                     </div>
@@ -52,4 +53,21 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
 </body>
+<script type="text/javascript">
+function longin(){
+	$.ajax({
+		url:"submitLogin",
+		method:"Post",
+// 		dataType:"json",
+		data:$("form[name='submitLogin']").serialize(),
+		success:function(re) {
+			if(re.status == 200) {
+				window.location.href=re.url;
+			}	
+		}
+	});
+}
+
+
+</script>
 </html>
