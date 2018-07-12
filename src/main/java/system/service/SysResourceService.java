@@ -38,4 +38,8 @@ public class SysResourceService {
 		List<SysRole> roles = sysRoleRepository.findBySysUsersId(userId);
 		return sysResourceRepository.findBySysRolesIn(roles);
 	}
+	public List<SysResource> listByParentId(Long parentId) {
+		List<SysResource> roles = sysResourceRepository.findByParent_Id(parentId);
+		return roles;
+	}
 }

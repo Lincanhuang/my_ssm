@@ -18,4 +18,6 @@ public interface SysResourceRepository  extends JpaRepository<SysResource, Long>
 	public List<SysResource> findBySysRoles_Id(Long roleId);
 	
 	public List<SysResource> findBySysRoles(SysResource roleId);
+	
+	public List<SysResource> findByParent_Id(Long parentId);
 }

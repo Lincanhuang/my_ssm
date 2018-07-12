@@ -55,8 +55,8 @@ public abstract class AbstractEntity implements Serializable {
 
 	@Override
 	public String toString() {
-		return "AbstractEntity [getId()=" + getId() + ", getCreateDate()=" + getCreateDate() + ", getUpdateDate()="
-				+ getUpdateDate() + "]";
+		Class<? extends AbstractEntity> t = this.getClass();
+		return t.getSimpleName() + "[id = " + id + "]";
 	}
 
 }

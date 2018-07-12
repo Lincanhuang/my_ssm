@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -30,7 +31,9 @@ public class SysResource extends AbstractEntity {
 	private Boolean external;
 	private Boolean available;
 	private String icon;
-	private Long parentId;
+	@ManyToOne(cascade= {CascadeType.DETACH,CascadeType.PERSIST},fetch=FetchType.LAZY)
+	@JoinColumn(name="parentId")
+	private SysResource parent;
     @OneToMany(cascade= {CascadeType.DETACH,CascadeType.PERSIST,CascadeType.REMOVE},fetch=FetchType.LAZY)
     @JoinColumn(name="parentId")
 	Set<SysResource> children;
@@ -119,11 +122,11 @@ public class SysResource extends AbstractEntity {
 		this.children = children;
 	}
 	
-	public Long getParentId() {
-		 return parentId;  
+	public SysResource getParent() {
+		 return parent;  
 	}
-	public void setParentId(Long parentId) {
-		this.parentId = parentId;
+	public void setParent(SysResource parent) {
+		this.parent = parent;
 	}
 
 }
