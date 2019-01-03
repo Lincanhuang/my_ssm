@@ -4,9 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -25,7 +23,7 @@ import system.entity.SysUser;
 import system.service.SysUserService;
 
 @Controller
-public class UserLoginController {
+public class CommonController {
 
 	@Resource
 	SysUserService sysUserService;
@@ -38,14 +36,7 @@ public class UserLoginController {
 	public ModelAndView login(){
 		return new ModelAndView("user/login");
 	}
-	/**
-	 * 注册跳转
-	 * @return
-	 */
-	@RequestMapping(value="register",method=RequestMethod.GET)
-	public String register(){
-		return "/user/register";
-	}
+	
 	/**
 	 * 登录提交
 	 * @param entity		登录的UUser
@@ -64,7 +55,6 @@ public class UserLoginController {
 			UsernamePasswordToken upk = new UsernamePasswordToken(entity.getUsername(), entity.getPassword());
 			upk.setRememberMe(rememberMe);
 			SecurityUtils.getSubject().login(upk);
-			SecurityUtils.getSubject().getPrincipal();
 			resultMap .put("status", 200);
 			resultMap.put("message", "登录成功");
 			redirectAttributes.addFlashAttribute("request",request.getParameterMap());
@@ -90,29 +80,15 @@ public class UserLoginController {
 		 * 这里其实可以直接catch Exception，然后抛出 message即可，但是最好还是各种明细catch 好点。。
 		 */
 		} catch (DisabledAccountException e) {
-			resultMap.put("status", 500);
+			resultMap.put("status", 1);
 			resultMap.put("message", "帐号已经禁用。");
 		} catch (Exception e) {
-			resultMap.put("status", 500);
+			resultMap.put("status", 2);
 			resultMap.put("message", "帐号或密码错误");
 		}
 		return resultMap;
 	}
 	
-	@RequestMapping(value="success",method= {RequestMethod.POST,RequestMethod.GET})
-	public void success(HttpServletRequest request, HttpServletResponse response) {
-		response.setContentType(request.getHeader("accept"));
-		response.setCharacterEncoding("UTF-8");
-		response.setHeader("Location", request.getParameter("back_url"));
-	}
-	
-	@RequestMapping(value="fail",method= {RequestMethod.POST,RequestMethod.GET})
-	@ResponseBody
-	public Map<String, Object> fail(ServletRequest request) {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("back_url", request.getParameter("back_url"));
-		return resultMap;
-	}
 	
 	/**
 	 * 退出
@@ -130,8 +106,5 @@ public class UserLoginController {
 		}
 		return resultMap;
 	}
-	@RequestMapping(value="index",method =RequestMethod.GET)
-	public String index() {
-		return "index";
-	}
+	
 }

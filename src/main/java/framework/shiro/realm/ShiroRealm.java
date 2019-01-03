@@ -47,12 +47,12 @@ public class ShiroRealm extends AuthorizingRealm {
 		if (user == null) {
 			throw new UnknownAccountException("账号不存在！");
 		}
-		if (user.getStatus() != null && UserStatusEnum.DISABLE.getCode().equals(user.getStatus())) {
+		if (user.getStatus() != null && UserStatusEnum.DISABLE.equals(user.getStatus())) {
 			throw new LockedAccountException("帐号已被锁定，禁止登录！");
 		}
 
 		// principal参数使用用户Id，方便动态刷新用户权限
-		SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(user.getId(), user.getPassword().toCharArray(), getName());
+		SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(user.getId(), user.getPassword(), getName());
 		simpleAuthenticationInfo.setCredentialsSalt(ByteSource.Util.bytes(user.getSalt()));
 		return simpleAuthenticationInfo;
 	}
@@ -65,26 +65,28 @@ public class ShiroRealm extends AuthorizingRealm {
 		 if (principals == null) {
 	        throw new AuthorizationException("PrincipalCollection method argument cannot be null.");
         }
+		 
 		 Long userId = (Long) getAvailablePrincipal(principals);
 		// 权限信息对象info,用来存放查出的用户的所有的角色（role）及权限（permission）
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 //		userId = (Long) SecurityUtils.getSubject().getPrincipal();
 		// 赋予角色
 		List<SysRole> roleList = sysRoleService.listRolesByUserId(userId);
-		for (SysRole role : roleList) {
-			info.addRole(role.getName());
+		if (!CollectionUtils.isEmpty(roleList)) {
+			roleList.stream().forEach((t) -> {
+				info.addRole(t.getName());
+			});
 		}
 
 		// 赋予权限
 		List<SysResource> resourcesList = sysResourceService.listByUserId(userId);
 		if (!CollectionUtils.isEmpty(resourcesList)) {
-			for (SysResource resources : resourcesList) {
-				String permission = resources.getPermission();
-				System.out.println(resources.getName() + "   " + permission);
+			resourcesList.stream().forEach((t) -> {
+				String permission = t.getPermission();
 				if (!StringUtils.isEmpty(permission)) {
 					info.addStringPermission(permission);
 				}
-			}
+			});
 		}
 		return info;
 	}

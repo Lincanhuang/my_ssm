@@ -18,6 +18,7 @@
 					/user/** = anon
 					/user** = anon
 					/submitLogin = anon
+					/admin/** = authc,roles[管理员]
 <!-- 					/page/login.jsp = anon -->
 	<!--				/page/register/* = anon-->
 	<!--				/page/index.jsp = authc-->
@@ -52,13 +53,16 @@
    </bean>
    
    <bean id="realm" class="framework.shiro.realm.ShiroRealm">
-   		<property name="credentialsMatcher" ref="matcher"/>
+<!--    		<property name="credentialsMatcher" ref="matcher"/> -->
+   		
+   		<property name="credentialsMatcher">
+   			<bean id="matcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher" >
+		   		<constructor-arg name="hashAlgorithmName" value="SHA-256"/>
+		   		<property name="hashIterations" value="2" />
+		   </bean>
+   		</property>
    </bean>
    
-   <bean id="matcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher" >
-   		<constructor-arg name="hashAlgorithmName" value="SHA-256"/>
-   		<property name="hashIterations" value="2" />
-   </bean>
 <!-- Session Manager -->
 	<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
 		<!-- 相隔多久检查一次session的有效性   -->

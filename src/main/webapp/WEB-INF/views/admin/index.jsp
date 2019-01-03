@@ -1,8 +1,8 @@
-<%@ page contentType="text/html;charset=UTF-8"%>
-<jsp:include page="include.jsp"/>
-
-<!DOCTYPE html>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+ <%@ include file="/WEB-INF/views/common/include.jsp"%>
+<!DOCTYPE html >
+<html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -115,9 +115,9 @@
 </div>
 
 <a href="http://amazeui.org/examples/admin-index.html#" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu" data-am-offcanvas="{target: &#39;#admin-offcanvas&#39;}"></a>
-    <script src="static/amazeUI/js/jquery.min.js"></script>
-    <script src="static/amazeUI/js/amazeui.min.js"></script>
-    <script src="static/amazeUI/js/app.js"></script>
+<script src="static/amazeUI/js/jquery.min.js"></script>
+<script src="static/amazeUI/js/amazeui.min.js"></script>
+<script src="static/amazeUI/js/app.js"></script>
 <script type="text/javascript">
 </script>
 </body>

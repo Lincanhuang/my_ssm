@@ -14,8 +14,7 @@ public class SysRoleService {
 	@Resource
 	public SysRoleRepository sysRoleRepository;
 	public List<SysRole> listRolesByUserId(Long userId) {
-//		sysRoleRepository
-		return null;
+		return sysRoleRepository.findBySysUsersId(userId);
 	}
 
 }

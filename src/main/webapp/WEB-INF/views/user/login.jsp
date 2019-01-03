@@ -1,5 +1,6 @@
-<%@ page contentType="text/html;charset=UTF-8"%>
-<jsp:include page="../include.jsp"/>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" isErrorPage="true"%>
+ <%@ include file="/WEB-INF/views/common/include.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +14,7 @@
     </style>
 </head>
 <body>
+
     <div class="container">
         <div class="row">
             <div class="col-md-4 col-md-offset-4">
@@ -62,7 +64,7 @@ function longin(){
 		data:$("form[name='submitLogin']").serialize(),
 		success:function(re) {
 			if(re.status == 200) {
-				window.location.href=re.url;
+				window.location.href="${ctx}/admin";
 			}	
 		}
 	});

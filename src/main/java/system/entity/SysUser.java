@@ -6,6 +6,8 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -36,7 +38,8 @@ public class SysUser extends AbstractEntity {
 	private Date lastLoginTime;
 	private Integer loginCount;
 	private String remark;
-	private Integer status;
+	@Enumerated(EnumType.ORDINAL)
+	private UserStatusEnum status = UserStatusEnum.ENABLE;
 	private String salt;
 
 	@ManyToMany(cascade = CascadeType.PERSIST)
@@ -167,11 +170,11 @@ public class SysUser extends AbstractEntity {
 		this.remark = remark;
 	}
 
-	public Integer getStatus() {
+	public UserStatusEnum getStatus() {
 		return status;
 	}
 
-	public void setStatus(Integer status) {
+	public void setStatus(UserStatusEnum status) {
 		this.status = status;
 	}
 
