@@ -38,7 +38,7 @@
         </property>
     </bean>
 <!--     <mvc:default-servlet-handler default-servlet-name="所使用的Web服务器默认使用的Servlet名称" /> -->
-<!--     <mvc:default-servlet-handler/> -->
+    <mvc:default-servlet-handler/>
     <mvc:annotation-driven />
     <!--annotation configuration，隐式的向容器注册bean，以识别注解 -->
     <context:annotation-config/>

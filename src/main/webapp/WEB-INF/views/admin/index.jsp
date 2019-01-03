@@ -17,8 +17,8 @@
   <link rel="icon" type="image/png" href="http://amazeui.org/i/favicon.png">
   <link rel="apple-touch-icon-precomposed" href="http://amazeui.org/i/app-icon72x72@2x.png">
   <meta name="apple-mobile-web-app-title" content="Amaze UI">
-  <link rel="stylesheet" href="static/amazeUI/css/amazeui.min.css" />
-  <link rel="stylesheet" href="static/amazeUI/css/admin.css">
+  <link rel="stylesheet" href="${ctx }/static/amazeUI/css/amazeui.min.css" />
+  <link rel="stylesheet" href="${ctx }/static/amazeUI/css/admin.css">
 </head>
 <body>
 <!--[if lte IE 9]>
