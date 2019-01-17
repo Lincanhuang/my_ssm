@@ -48,8 +48,8 @@
    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
        <property name="realm" ref="realm" />
        <property name="sessionManager" ref="sessionManager"/>
-       <property name="rememberMeManager" ref="rememberMeManager"/>
-<!--        <property name="cacheManager" ref="shiroCache"/> -->
+<!--        <property name="rememberMeManager" ref="rememberMeManager"/> -->
+<!--        <property name="cacheManager" ref="cacheManager"/> -->
    </bean>
    
    <bean id="realm" class="framework.shiro.realm.ShiroRealm">

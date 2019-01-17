@@ -126,7 +126,6 @@
 			<param-name>loginPassword</param-name>
 			<param-value>admin</param-value>
 		</init-param>
-			<load-on-startup>2</load-on-startup>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>DruidStatView</servlet-name>
