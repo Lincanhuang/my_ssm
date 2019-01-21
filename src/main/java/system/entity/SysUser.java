@@ -1,10 +1,11 @@
 package system.entity;
 
-import java.util.Date;
+import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -12,34 +13,29 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 import framework.entity.AbstractEntity;
+import framework.entity.UserStatusEnum;
 
 @Entity
 @Table(name = "sys_user")
-public class SysUser extends AbstractEntity {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 868924786965358341L;
+public class SysUser extends AbstractEntity implements Serializable {
 
+	private static final long serialVersionUID = 868924786965358341L;
+	/**
+     * 登陆名称.
+     */
+	@Column(nullable = false, unique = true)
+	@NotEmpty
 	private String username;
+	
+	@Column(nullable = false)
 	private String password;
-	private String nickname;
-	private String mobile;
-	private String email;
-	private String qq;
-	private Date birthday;
-	private Integer gender;
-	private String avatar;
-	private String userType;
-	private String regIp;
-	private String lastLoginIp;
-	private Date lastLoginTime;
-	private Integer loginCount;
-	private String remark;
+	
+	
 	@Enumerated(EnumType.ORDINAL)
-	private UserStatusEnum status = UserStatusEnum.ENABLE;
+	private UserStatusEnum UserStatus = UserStatusEnum.ENABLE;
 	private String salt;
 
 	@ManyToMany(cascade = CascadeType.PERSIST)
@@ -66,117 +62,6 @@ public class SysUser extends AbstractEntity {
 		this.password = password;
 	}
 
-	public String getNickname() {
-		return nickname;
-	}
-
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
-
-	public String getMobile() {
-		return mobile;
-	}
-
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getQq() {
-		return qq;
-	}
-
-	public void setQq(String qq) {
-		this.qq = qq;
-	}
-
-	public Date getBirthday() {
-		return birthday;
-	}
-
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
-	}
-
-	public Integer getGender() {
-		return gender;
-	}
-
-	public void setGender(Integer gender) {
-		this.gender = gender;
-	}
-
-	public String getAvatar() {
-		return avatar;
-	}
-
-	public void setAvatar(String avatar) {
-		this.avatar = avatar;
-	}
-
-	public String getUserType() {
-		return userType;
-	}
-
-	public void setUserType(String userType) {
-		this.userType = userType;
-	}
-
-	public String getRegIp() {
-		return regIp;
-	}
-
-	public void setRegIp(String regIp) {
-		this.regIp = regIp;
-	}
-
-	public String getLastLoginIp() {
-		return lastLoginIp;
-	}
-
-	public void setLastLoginIp(String lastLoginIp) {
-		this.lastLoginIp = lastLoginIp;
-	}
-
-	public Date getLastLoginTime() {
-		return lastLoginTime;
-	}
-
-	public void setLastLoginTime(Date lastLoginTime) {
-		this.lastLoginTime = lastLoginTime;
-	}
-
-	public Integer getLoginCount() {
-		return loginCount;
-	}
-
-	public void setLoginCount(Integer loginCount) {
-		this.loginCount = loginCount;
-	}
-
-	public String getRemark() {
-		return remark;
-	}
-
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
-
-	public UserStatusEnum getStatus() {
-		return status;
-	}
-
-	public void setStatus(UserStatusEnum status) {
-		this.status = status;
-	}
 
 	public Set<SysRole> getRoles() {
 		return roles;
@@ -184,6 +69,14 @@ public class SysUser extends AbstractEntity {
 
 	public void setRoles(Set<SysRole> roles) {
 		this.roles = roles;
+	}
+
+	public UserStatusEnum getUserStatus() {
+		return UserStatus;
+	}
+
+	public void setUserStatus(UserStatusEnum userStatus) {
+		UserStatus = userStatus;
 	}
 
 	public String getSalt() {

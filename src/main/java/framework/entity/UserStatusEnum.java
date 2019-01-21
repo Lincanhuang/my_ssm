@@ -1,6 +1,6 @@
-package system.entity;
+package framework.entity;
 
 public enum UserStatusEnum {
 	DISABLE,
-	ENABLE
+	ENABLE;
 }

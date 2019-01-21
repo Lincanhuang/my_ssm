@@ -38,7 +38,7 @@ public class SysRole extends AbstractEntity {
 	@JoinTable(name = "sys_role_resource",
           joinColumns = {@JoinColumn(name = "roleId")},
           inverseJoinColumns = {@JoinColumn(name = "resourceId")})
-	private Set<SysResource> sysResources = new LinkedHashSet<>();
+	private Set<SysMenu> sysResources = new LinkedHashSet<>();
 
 	public String getName() {
 		return name;
@@ -64,19 +64,19 @@ public class SysRole extends AbstractEntity {
 		this.available = available;
 	}
 
-	public Set<SysUser> getRoles() {
+	public Set<SysUser> getSysUsers() {
 		return sysUsers;
 	}
 
-	public void setRoles(Set<SysUser> roles) {
-		this.sysUsers = roles;
+	public void setSysUsers(Set<SysUser> sysUsers) {
+		this.sysUsers = sysUsers;
 	}
 
-	public Set<SysResource> getSysResources() {
+	public Set<SysMenu> getSysResources() {
 		return sysResources;
 	}
 
-	public void setSysResources(Set<SysResource> sysResources) {
+	public void setSysResources(Set<SysMenu> sysResources) {
 		this.sysResources = sysResources;
 	}
 	

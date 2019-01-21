@@ -19,11 +19,11 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import system.entity.SysResource;
+import framework.entity.UserStatusEnum;
+import system.entity.SysMenu;
 import system.entity.SysRole;
 import system.entity.SysUser;
-import system.entity.UserStatusEnum;
-import system.service.SysResourceService;
+import system.service.SysMenuService;
 import system.service.SysRoleService;
 import system.service.SysUserService;
 
@@ -32,7 +32,7 @@ public class ShiroRealm extends AuthorizingRealm {
 	@Resource
 	private SysUserService sysUserService;
 	@Resource
-	private SysResourceService sysResourceService;
+	private SysMenuService sysMenuService;
 	@Resource
 	private SysRoleService sysRoleService;
 
@@ -47,7 +47,7 @@ public class ShiroRealm extends AuthorizingRealm {
 		if (user == null) {
 			throw new UnknownAccountException("账号不存在！");
 		}
-		if (user.getStatus() != null && UserStatusEnum.DISABLE.equals(user.getStatus())) {
+		if (UserStatusEnum.DISABLE.equals(user.getUserStatus())) {
 			throw new LockedAccountException("帐号已被锁定，禁止登录！");
 		}
 
@@ -79,10 +79,10 @@ public class ShiroRealm extends AuthorizingRealm {
 		}
 
 		// 赋予权限
-		List<SysResource> resourcesList = sysResourceService.listByUserId(userId);
+		List<SysMenu> resourcesList = sysMenuService.listByUserId(userId);
 		if (!CollectionUtils.isEmpty(resourcesList)) {
 			resourcesList.stream().forEach((t) -> {
-				String permission = t.getPermission();
+				String permission = t.getPerms();
 				if (!StringUtils.isEmpty(permission)) {
 					info.addStringPermission(permission);
 				}

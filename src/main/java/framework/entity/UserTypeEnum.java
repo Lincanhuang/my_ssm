@@ -1,12 +1,12 @@
-package system.entity;
+package framework.entity;
 
-public enum UserType {
+public enum UserTypeEnum {
 	
 	ROOT("超级用户"),ADMIN("管理员"),NONE("未知");
 	
 	private String value;
 
-	private UserType(String value) {
+	private UserTypeEnum(String value) {
 		this.value = value;
 	}
 
