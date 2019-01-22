@@ -6,25 +6,47 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import ch.my.project.system.menu.entity.SysMenu;
+import ch.my.project.system.menu.service.SysMenuService;
 @ContextConfiguration(value= {"classpath:config/spring-dataSourse.xml"}) 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ActiveProfiles("test")
-//@Rollback(value = true)
+@ActiveProfiles("dev")
+@Rollback(value = false)
 //@Transactional
 public class MyTest {
 	
-//	@Autowired
-//	private SysResourceService sysResourceService;
+	@Autowired
+	private SysMenuService sysMenuService;
 //	 
-//	@Test
+	@Test
 	public void insertChild() throws Exception {
+		SysMenu m = new SysMenu();
+		m.setMenuName("一级菜单3");
+		SysMenu m1 = new SysMenu();
+		m1.setMenuName("二级菜单3");
+		SysMenu m2 = new SysMenu();
+		m2.setMenuName("二级菜单4");
+		m.getChildren().add(m1);
+		m.getChildren().add(m2);
+		sysMenuService.save(m);
+//		sysMenuService.deleteById(1L);
 	}
 //	@Test
 	public void insertParent() throws Exception {
+		SysMenu m3 = new SysMenu();
+		m3.setMenuName("二级菜单3");
+		SysMenu m = new SysMenu();
+		m.setMenuName("一级菜单2");
+		m3.setParent(m);
+		sysMenuService.save(m3);
 	}
 	public void join() {
 		 ExecutorService executor = Executors.newFixedThreadPool(8);
