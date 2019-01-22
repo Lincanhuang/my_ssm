@@ -8,16 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ch.my.project.system.menu.entity.SysMenu;
 import ch.my.project.system.menu.repository.SysMenuRepository;
-import ch.my.project.system.role.entity.SysRole;
-import ch.my.project.system.role.repository.SysRoleRepository;
 
 @Service
 public class SysMenuService {
 	@Autowired
 	private SysMenuRepository sysMenuRepository;
-	
-	@Autowired
-	private SysRoleRepository sysRoleRepository;
 	
 	public SysMenu save(SysMenu resource) {
 		resource = sysMenuRepository.save(resource);
@@ -31,17 +26,23 @@ public class SysMenuService {
 		sysMenuRepository.deleteById(id);
 	}
 	
-	public SysMenu getById(Long id)
-	{
+	public SysMenu getById(Long id) {
 		SysMenu one = sysMenuRepository.getOne(id);
 		return one;
 	}
-	public List<SysMenu> listByUserId(Long userId) {
-		List<SysRole> roles = sysRoleRepository.findBySysUsersId(userId);
-		return sysMenuRepository.findBySysRolesIn(roles);
-	}
+	
 	public List<SysMenu> listByParentId(Long parentId) {
 		List<SysMenu> roles = sysMenuRepository.findByParent_Id(parentId);
 		return roles;
+	}
+	
+	public List<SysMenu> listByUserId(long userId) {
+		List<SysMenu> menus = sysMenuRepository.findBySysRoles_SysUsers_Id(userId);
+		return menus;
+	}
+	
+	public List<SysMenu> listByUserName(String username) {
+		List<SysMenu> menus = sysMenuRepository.findBySysRoles_SysUsers_Username(username);
+		return menus;
 	}
 }

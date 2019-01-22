@@ -20,4 +20,8 @@ public interface SysMenuRepository  extends CommonRepository<SysMenu, Long>{
 	public List<SysMenu> findBySysRoles(SysMenu sysMenu);
 	
 	public List<SysMenu> findByParent_Id(Long parentId);
+
+	public  List<SysMenu> findBySysRoles_SysUsers_Username(String username);
+
+	public List<SysMenu> findBySysRoles_SysUsers_Id(long sysUserId);
 }
