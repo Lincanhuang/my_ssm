@@ -50,11 +50,11 @@ public class SysMenu extends AbstractEntity {
 	private SysMenu parent;
     @OneToMany(cascade= {CascadeType.DETACH,CascadeType.PERSIST,CascadeType.REMOVE},fetch=FetchType.LAZY)
     @JoinColumn(name="parentId")
-	Set<SysMenu> children;
+	Set<SysMenu> children = new LinkedHashSet<>();
 	
     @ManyToMany(cascade = CascadeType.PERSIST)
-	@JoinTable(name = "sys_role_resource",
-          joinColumns = {@JoinColumn(name = "resourceId")},
+	@JoinTable(name = "sys_role_menu",
+          joinColumns = {@JoinColumn(name = "menuId")},
           inverseJoinColumns = {@JoinColumn(name = "roleId")})
 	private Set<SysRole> sysRoles = new LinkedHashSet<>();
     public SysMenu() {

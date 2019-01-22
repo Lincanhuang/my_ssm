@@ -27,8 +27,10 @@ public class SysMenuService {
 	public void delete(SysMenu resource) {
 		sysMenuRepository.deleteById(resource.getId());
 	}
+	public void deleteById(Long id) {
+		sysMenuRepository.deleteById(id);
+	}
 	
-	@Transactional(readOnly = false)
 	public SysMenu getById(Long id)
 	{
 		SysMenu one = sysMenuRepository.getOne(id);
