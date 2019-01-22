@@ -52,7 +52,7 @@
 <!--        <property name="cacheManager" ref="cacheManager"/> -->
    </bean>
    
-   <bean id="realm" class="framework.shiro.realm.ShiroRealm">
+   <bean id="realm" class="ch.my.framework.shiro.realm.ShiroRealm">
 <!--    		<property name="credentialsMatcher" ref="matcher"/> -->
    		
    		<property name="credentialsMatcher">

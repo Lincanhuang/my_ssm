@@ -119,7 +119,7 @@
 <!--   	</bean> -->
 
 <!-- 利用切面记录日志 -->
-	<bean id="logInterceptor" class="utils.LogInterceptor" /> 
+	<bean id="logInterceptor" class="ch.my.utils.LogInterceptor" /> 
 <!-- <aop:aspectj-autoproxy expose-proxy="true" />   -->
 <!-- 	<aop:config>   -->
 <!-- 	    <aop:aspect id="logAspect" ref="logInterceptor">   -->

@@ -7,19 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
-import system.dao.SysResourceRepository;
-import system.dao.SysRoleRepository;
-import system.entity.SysResource;
-import system.entity.SysRole;
+import ch.my.project.system.menu.repository.SysMenuRepository;
+import ch.my.project.system.role.entity.SysRole;
+import ch.my.project.system.role.repository.SysRoleRepository;
 
 @ContextConfiguration(value= {"classpath:config/spring-dataSourse.xml"}) 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
 public class TestMain {
 	@Autowired
-	private SysResourceRepository sysResourceRepository;
+	private SysMenuRepository sysMenuRepository;
 	@Autowired
 	private SysRoleRepository sysRoleRepository;
 	@Test
@@ -39,7 +37,7 @@ public class TestMain {
 		s1.setId(2L);
 		rolesId.add(s2);
 		sysRoleRepository.saveAll(rolesId);
-		sysResourceRepository.findBySysRolesIn(rolesId);
+		sysMenuRepository.findBySysRolesIn(rolesId);
 	}
 
 }

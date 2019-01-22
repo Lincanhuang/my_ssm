@@ -22,11 +22,11 @@
                     http://www.springframework.org/schema/cache
                     http://www.springframework.org/schema/cache/spring-cache.xsd">
 	<!-- 引入jdbc配置文件 -->
-	<context:component-scan base-package="system.**">
+	<context:component-scan base-package="ch.my.project.**.service">
 		<context:exclude-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
-	<jpa:repositories base-package="system.dao"
+	<jpa:repositories base-package="ch.my.project.**.repository.**"
 		transaction-manager-ref="transactionManager"
 		entity-manager-factory-ref="entityManagerFactory" />
 	<!-- spring 缓存配置 -->
@@ -53,7 +53,7 @@
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="packagesToScan" value="system.entity" />
+		<property name="packagesToScan" value="ch.my.project.**.entity" />
 		<property name="jpaVendorAdapter" ref="jpaVendorAdapter" />
 		<property name="jpaProperties">
 			<props>
