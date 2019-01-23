@@ -11,6 +11,7 @@ import ch.my.project.system.user.repository.SysUserRepository;
 public class SysUserService {
 	@Resource
 	private SysUserRepository sysUserRepository;
+	
 	public SysUser getByUserName(String username) {
 		return sysUserRepository.findByUsername(username);
 	}

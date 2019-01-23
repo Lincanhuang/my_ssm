@@ -80,37 +80,28 @@
 	<!-- 使用注解切面 -->
 	<aop:aspectj-autoproxy />
 	<!-- 配置事务通知属性 -->
-	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+	<tx:advice id="txAdvice" transaction-manager="transactionManager" >
 		<!-- 定义事务传播属性 -->
 		<tx:attributes>
 			<tx:method name="insert*" propagation="REQUIRED" />
-			<tx:method name="update*" propagation="REQUIRED" />
 			<tx:method name="upd*" propagation="REQUIRED" />
 			<tx:method name="edit*" propagation="REQUIRED" />
 			<tx:method name="save*" propagation="REQUIRED" />
-			<tx:method name="add*" propagation="REQUIRED" read-only="false" />
+			<tx:method name="add*" propagation="REQUIRED"  />
 			<tx:method name="new*" propagation="REQUIRED" />
 			<tx:method name="set*" propagation="REQUIRED" />
 			<tx:method name="remove*" propagation="REQUIRED" />
-			<tx:method name="delete*" propagation="REQUIRED" />
 			<tx:method name="del*" propagation="REQUIRED" />
 			<tx:method name="change*" propagation="REQUIRED" />
-			<tx:method name="check*" propagation="REQUIRED" />
-			<tx:method name="get*" propagation="REQUIRED" read-only="true" />
-			<tx:method name="search*" propagation="REQUIRED" read-only="true" />
-			<tx:method name="find*" propagation="REQUIRED" read-only="true" />
-			<tx:method name="load*" propagation="REQUIRED" read-only="true" />
 			<tx:method name="*" propagation="REQUIRED" read-only="true" />
 		</tx:attributes>
 	</tx:advice>
 
 	<aop:config>
 		<!-- 第一个"*"表示返回类型 , 第一个".."表示子包 第二个星表示类，第三个星表示方法，第二个".."表示方法参数 -->
-		<aop:pointcut id="testService"
-			expression="execution (* system.service..*Service.*(..))" />
-		<aop:advisor advice-ref="txAdvice" pointcut-ref="testService" />
+		<aop:pointcut id="servicePoint" expression="execution (* ch.my..service.*Service.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="servicePoint"  />
 	</aop:config>
-
 
 	<beans profile="dev">
 		<!-- <context:property-placeholder location="classpath:properties/JDBC.properties" 
@@ -147,8 +138,8 @@
 
 			<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
 			<property name="poolPreparedStatements" value="false" />
-			<property name="maxPoolPreparedStatementPerConnectionSize"
-				value="20" />
+			<property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
+			 <property name="connectionInitSqls" value="set names utf8mb4;"/>
 
 			<!-- 配置监控统计拦截的filters -->
 			<property name="filters" value="stat,wall" />

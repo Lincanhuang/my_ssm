@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import ch.my.project.system.menu.entity.SysMenu;
 import ch.my.project.system.menu.repository.SysMenuRepository;
@@ -18,17 +17,14 @@ public class SysMenuService {
 		resource = sysMenuRepository.save(resource);
 		return resource;
 	}
-	@Transactional(readOnly = false)
 	public void delete(SysMenu resource) {
 		sysMenuRepository.deleteById(resource.getId());
 	}
 	public void deleteById(Long id) {
 		sysMenuRepository.deleteById(id);
 	}
-	
 	public SysMenu getById(Long id) {
-		SysMenu one = sysMenuRepository.getOne(id);
-		return one;
+		return sysMenuRepository.findById(id).orElse(null);
 	}
 	
 	public List<SysMenu> listByParentId(Long parentId) {
