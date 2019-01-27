@@ -52,8 +52,7 @@ public class ShiroRealm extends AuthorizingRealm {
 		}
 
 		// principal参数使用用户Id，方便动态刷新用户权限
-		SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(user.getId(), user.getPassword(), getName());
-		simpleAuthenticationInfo.setCredentialsSalt(ByteSource.Util.bytes(user.getSalt()));
+		SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(user.getId(), user.getPassword(),ByteSource.Util.bytes(user.getSalt()), getName());
 		return simpleAuthenticationInfo;
 	}
 
@@ -65,8 +64,7 @@ public class ShiroRealm extends AuthorizingRealm {
 		 if (principals == null) {
 	        throw new AuthorizationException("PrincipalCollection method argument cannot be null.");
         }
-		 
-		 Long userId = (Long) getAvailablePrincipal(principals);
+		Long userId = (Long) getAvailablePrincipal(principals);
 		// 权限信息对象info,用来存放查出的用户的所有的角色（role）及权限（permission）
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 //		userId = (Long) SecurityUtils.getSubject().getPrincipal();

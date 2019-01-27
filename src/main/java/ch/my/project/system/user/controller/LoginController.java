@@ -10,6 +10,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.DisabledAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.stereotype.Controller;
@@ -26,14 +28,14 @@ import ch.my.project.system.user.service.SysUserService;
 public class LoginController {
 
 	@Resource
-	SysUserService sysUserService;
+	private SysUserService sysUserService;
+	
 	
 	/**
 	 * 登录跳转
-	 * @return
 	 */
 	@RequestMapping(value="login",method=RequestMethod.GET)
-	public ModelAndView login(){
+	public ModelAndView login(HttpServletRequest request){
 		return new ModelAndView("user/login");
 	}
 	

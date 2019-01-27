@@ -106,10 +106,6 @@
 	<beans profile="dev">
 		<!-- <context:property-placeholder location="classpath:properties/JDBC.properties" 
 			ignore-unresolvable="true" /> -->
-		<bean id="propertyConfigurer"
-			class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
-			<property name="location" value="classpath:properties/JDBC.properties" />
-		</bean>
 		<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
 			init-method="init" destroy-method="close">
 			<!-- 基本属性 url、user、password -->

@@ -3,6 +3,8 @@ package ch.my.project.system.menu.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import ch.my.project.system.menu.entity.SysMenu;
@@ -39,6 +41,10 @@ public class SysMenuService {
 	
 	public List<SysMenu> listByUserName(String username) {
 		List<SysMenu> menus = sysMenuRepository.findBySysRoles_SysUsers_Username(username);
+		return menus;
+	}
+	public Page<SysMenu> pageList(Pageable page) {
+		Page<SysMenu> menus = sysMenuRepository.findAll(page);
 		return menus;
 	}
 }
