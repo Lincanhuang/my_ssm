@@ -16,7 +16,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import ch.my.project.system.menu.entity.SysMenu;
 import ch.my.project.system.menu.service.SysMenuService;
-@ContextConfiguration(value= {"classpath:config/spring-dataSourse.xml"}) 
+import ch.my.project.system.user.entity.SysUser;
+import ch.my.project.system.user.service.SysUserService;
+@ContextConfiguration(value= {"classpath:config/spring-context.xml"}) 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("dev")
 @Rollback(value = false)
@@ -25,18 +27,24 @@ public class MyTest {
 	
 	@Autowired
 	private SysMenuService sysMenuService;
+	@Autowired
+	private SysUserService sysUserService;
+	
 //	 
-	@Test
+//	@Test
 	public void insertChild() throws Exception {
+		
 		SysMenu m = new SysMenu();
-		m.setMenuName("一级菜单3");
-		SysMenu m1 = new SysMenu();
-		m1.setMenuName("二级菜单3");
-		SysMenu m2 = new SysMenu();
-		m2.setMenuName("二级菜单4");
-		m.getChildren().add(m1);
-		m.getChildren().add(m2);
+		m.setMenuName("一级菜单3🌴🐟");
+//		SysMenu m1 = new SysMenu();
+//		m1.setMenuName("二级菜单3");
+//		SysMenu m2 = new SysMenu();
+//		m2.setMenuName("二级菜单4");
+//		m.getChildren().add(m1);
+//		m.getChildren().add(m2);
 		sysMenuService.save(m);
+//		Shiro
+		
 //		sysMenuService.deleteById(1L);
 	}
 //	@Test
@@ -47,6 +55,16 @@ public class MyTest {
 		m.setMenuName("一级菜单2");
 		m3.setParent(m);
 		sysMenuService.save(m3);
+	}
+	@Test 
+	public void testFind() throws Exception {
+		SysUser user = new SysUser();
+		user.setUsername("testadmin");
+		user.setPassword("123");
+		sysUserService.enUserHexPwd(user);
+		sysUserService.save(user);
+//		System.out.println(sysMenuService.getById(30L));
+		
 	}
 	public void join() {
 		 ExecutorService executor = Executors.newFixedThreadPool(8);
