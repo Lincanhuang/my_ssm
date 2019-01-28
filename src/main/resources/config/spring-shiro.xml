@@ -86,8 +86,11 @@
 	<bean id="shiroCacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager"/>
 	
 <!-- 	<bean id="shiroSessionFactory" class="ch.my.framework.shiro.session.ShiroSessionFactory"/> -->
-	<bean id="shiroSessionDao"  class="ch.my.framework.shiro.session.ShiroSessionDao"/>
-	
+	<bean id="shiroSessionDao"  class="ch.my.framework.shiro.session.ShiroSessionDao">
+<!-- 		<property name="shiroRepository" > -->
+<!-- 			<bean class="ch.my.framework.shiro.session.ShiroRepository" /> -->
+<!-- 		</property> -->
+	</bean>
  	<!-- Shiro生命周期处理器-->
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
 	
