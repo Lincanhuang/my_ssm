@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import ch.my.common.repository.CommonRepository;
+import ch.my.framework.entity.MenuTypeEnum;
 import ch.my.project.system.menu.entity.SysMenu;
 import ch.my.project.system.role.entity.SysRole;
 @Repository
@@ -24,4 +25,6 @@ public interface SysMenuRepository  extends CommonRepository<SysMenu, Long>{
 	public  List<SysMenu> findBySysRoles_SysUsers_Username(String username);
 
 	public List<SysMenu> findBySysRoles_SysUsers_Id(long sysUserId);
+
+	public List<SysMenu> findByMenuType(MenuTypeEnum menuType);
 }

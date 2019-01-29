@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import ch.my.framework.entity.MenuTypeEnum;
 import ch.my.project.system.menu.entity.SysMenu;
 import ch.my.project.system.menu.repository.SysMenuRepository;
 
@@ -41,6 +42,10 @@ public class SysMenuService {
 	
 	public List<SysMenu> listByUserName(String username) {
 		List<SysMenu> menus = sysMenuRepository.findBySysRoles_SysUsers_Username(username);
+		return menus;
+	}
+	public List<SysMenu> listByMenuType(MenuTypeEnum menuType) {
+		List<SysMenu> menus = sysMenuRepository.findByMenuType(menuType);
 		return menus;
 	}
 	public Page<SysMenu> pageList(Pageable page) {

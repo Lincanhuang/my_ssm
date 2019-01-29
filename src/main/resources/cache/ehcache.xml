@@ -28,6 +28,15 @@
     <ehcache:heap unit="entries">500</ehcache:heap><!-- 最多缓存500个对象 -->
   </ehcache:cache>
   
+  <ehcache:cache alias="shiroCache" uses-template="myDefaultTemplate">
+    <ehcache:key-type>java.io.Serializable</ehcache:key-type>
+    <ehcache:value-type>org.apache.shiro.session.Session</ehcache:value-type>
+	<ehcache:expiry>
+      <ehcache:tti unit="minutes">30</ehcache:tti><!-- 数据过期时间30分钟，覆盖模板默认属性 -->
+    </ehcache:expiry>
+    <ehcache:heap unit="entries">500</ehcache:heap><!-- 最多缓存500个对象 -->
+  </ehcache:cache>
+  
   <!-- 默认模板 -->
   <ehcache:cache-template name="myDefaultTemplate">
     <ehcache:expiry>

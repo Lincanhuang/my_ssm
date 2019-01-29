@@ -3,6 +3,7 @@ package ch.my.project.system.user.service;
 import java.util.concurrent.ThreadLocalRandom;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
@@ -19,7 +20,7 @@ public class SysUserService {
 	public SysUser getByUserName(String username) {
 		return sysUserRepository.findByUsername(username);
 	}
-	
+//	@Transactional
 	public SysUser save(SysUser user) {
 		return sysUserRepository.save(user);
 	}
