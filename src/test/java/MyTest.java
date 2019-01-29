@@ -6,6 +6,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
+import javax.transaction.Transactional;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import ch.my.framework.entity.MenuTypeEnum;
 import ch.my.project.system.menu.entity.SysMenu;
 import ch.my.project.system.menu.service.SysMenuService;
 import ch.my.project.system.user.entity.SysUser;
@@ -62,7 +65,8 @@ public class MyTest {
 		user.setUsername("testadmin");
 		user.setPassword("123");
 		sysUserService.enUserHexPwd(user);
-		sysUserService.save(user);
+//		sysUserService.save(user);
+		sysMenuService.listByMenuType(MenuTypeEnum.MENU);
 //		System.out.println(sysMenuService.getById(30L));
 		
 	}

@@ -103,6 +103,13 @@
         <li><a href="http://amazeui.org/examples/admin-index.html#" class="am-text-danger"><span class="am-icon-btn am-icon-recycle"></span><br>昨日访问<br>80082</a></li>
         <li><a href="http://amazeui.org/examples/admin-index.html#" class="am-text-secondary"><span class="am-icon-btn am-icon-user-md"></span><br>在线用户<br>3000</a></li>
       </ul>
+       <ul >
+       <c:forEach items="${menus}" var="item">
+       	<li ><a href="${ctx}/${item.url }">${item.url }</a></li>
+       
+       </c:forEach>
+       
+       </ul>
     </div>
 
     <footer class="admin-content-footer">
