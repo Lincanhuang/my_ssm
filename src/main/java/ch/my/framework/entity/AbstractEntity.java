@@ -26,12 +26,12 @@ public abstract class AbstractEntity implements Serializable {
 	 * 添加用户（当前用户）.
 	 */
 	@Column(length = 50, nullable = false)
-	protected String createdUser;
+	protected String createdUser = "an";
 	/**
 	 * 添加时间（当前时间）.
 	 */
 	@Column(nullable = false)
-	protected Date createdDate;
+	protected Date createdDate = new Date();
 	/**
 	 * 添加IP（当前客户端IP）.
 	 */

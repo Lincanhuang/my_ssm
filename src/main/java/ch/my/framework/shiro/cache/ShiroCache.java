@@ -1,60 +1,31 @@
 package ch.my.framework.shiro.cache;
 
-import java.util.Collection;
-import java.util.Set;
+import java.util.Map;
 
-import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
-import org.springframework.lang.Nullable;
+import org.apache.shiro.cache.MapCache;
 
-public class ShiroCache<K, V> implements Cache<K, V> {
+public class ShiroCache<K, V> extends MapCache<K, V> {
 	
-	@Nullable
-	private javax.cache.CacheManager cacheManager;
-	
-	private javax.cache.Cache<K, V> jCacheCache;
-	
-	public ShiroCache(String cacheName) {
-		jCacheCache = cacheManager.getCache(cacheName);
-	}
-	
-	@Override
-	public V get(K key) throws CacheException {
-		return jCacheCache.get(key);
+	public ShiroCache(String name, Map<K, V> backingMap) {
+		super(name, backingMap);
 	}
 
-	@Override
-	public V put(K key, V value) throws CacheException {
-		return jCacheCache.getAndPut(key, value);
-	}
+	
+	
 
 	@Override
 	public V remove(K key) throws CacheException {
-		return jCacheCache.getAndRemove(key);
+		System.out.println(key);
+		return super.remove(key);
 	}
 
 	@Override
-	public void clear() throws CacheException {
-		jCacheCache.clear();
-	}
+	public V get(K key) throws CacheException {
+		System.out.println(key);
+        return super.get(key);
+    }
 
-	@Override
-	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public Set<K> keys() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Collection<V> values() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 	

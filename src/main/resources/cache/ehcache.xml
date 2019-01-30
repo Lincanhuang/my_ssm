@@ -28,7 +28,7 @@
     <ehcache:heap unit="entries">500</ehcache:heap><!-- 最多缓存500个对象 -->
   </ehcache:cache>
   
-  <ehcache:cache alias="shiroCache" uses-template="myDefaultTemplate">
+  <ehcache:cache alias="shiro-activeSessionCache" uses-template="myDefaultTemplate">
     <ehcache:key-type>java.io.Serializable</ehcache:key-type>
     <ehcache:value-type>org.apache.shiro.session.Session</ehcache:value-type>
 	<ehcache:expiry>

@@ -27,11 +27,7 @@ public class IndexController {
 
 	@RequestMapping(value = {"","index"})
 	public String index(HttpServletRequest request, Model model) {
-		String str = "";
-		DefaultWebSecurityManager dwsm = new DefaultWebSecurityManager();
-//		dwsm.setSubjectDAO(subjectDAO);
-//		str = null;
-//		System.out.println(str.length());
+//		new DefaultWebSecurityManager().setCacheManager(cacheManager);
 		List<SysMenu> menus = sysMenuService.listByMenuType(MenuTypeEnum.BUTTON);
 		model.addAttribute("menus", menus);
 		return "admin/index";
