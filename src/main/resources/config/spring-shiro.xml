@@ -11,7 +11,7 @@
 		<property name="securityManager" ref="securityManager" />
 		<property name="loginUrl" value="/login" />
 		<property name="successUrl" value="/" />
-		<property name="unauthorizedUrl" value="/?login" />
+<!-- 		<property name="unauthorizedUrl" value="/?login" /> -->
 		
 <!--	初始配置，现采用自定义	-->
 		<property name="filterChainDefinitions" >
@@ -48,8 +48,6 @@
 		   </bean>
    		</property>
    </bean>
-   
-   
    
 	<!-- 安全管理器 -->
    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
@@ -96,13 +94,9 @@
 	   <property name="sessionIdCookie" ref="sessionIdCookie"/>
 	</bean>
    
-   
-
-	
 	<bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
 	    <constructor-arg name="name" value="shiroSelfCookie"/>
 	</bean>
-
 	
 <!-- 	<bean id="shiroSessionFactory" class="ch.my.framework.shiro.session.ShiroSessionFactory"/> -->
 <!-- 	<bean id="shiroSessionDao"  class="ch.my.framework.shiro.session.ShiroSessionDao"> -->
@@ -112,13 +106,5 @@
 <!-- 	</bean> -->
  	<!-- Shiro生命周期处理器-->
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
-	
-	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
-        <property name="proxyTargetClass" value="true" />
-    </bean>
-    
-    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
-	    <property name="securityManager" ref="securityManager"/>
-	</bean>
 	
 </beans>

@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.Spliterator;
 
 import javax.cache.Cache;
 import javax.cache.Cache.Entry;
@@ -12,18 +11,35 @@ import javax.cache.CacheManager;
 
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.UnknownSessionException;
+import org.apache.shiro.session.mgt.SimpleSession;
 import org.apache.shiro.session.mgt.ValidatingSession;
-import org.apache.shiro.session.mgt.eis.AbstractSessionDAO;
+import org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator;
+import org.apache.shiro.session.mgt.eis.SessionDAO;
+import org.apache.shiro.session.mgt.eis.SessionIdGenerator;
 
-public class ShiroSessionDao extends AbstractSessionDAO  {
+public class ShiroSessionDao implements SessionDAO {
 
-	public static final String ACTIVE_SESSION_CACHE_NAME = "shiro-activeSessionCache";
+	private SessionIdGenerator sessionIdGenerator;
 
 	private CacheManager cacheManager;
 
+	// private RedisClient redisClient;
+
 	private Cache<Serializable, Session> activeSessions;
 
-	private String activeSessionsCacheName = ACTIVE_SESSION_CACHE_NAME;
+	private String activeSessionsCacheName = "shiro-activeSessionCache";
+
+	public ShiroSessionDao() {
+		this.sessionIdGenerator = new JavaUuidSessionIdGenerator();
+	}
+
+	public SessionIdGenerator getSessionIdGenerator() {
+		return sessionIdGenerator;
+	}
+
+	public void setSessionIdGenerator(SessionIdGenerator sessionIdGenerator) {
+		this.sessionIdGenerator = sessionIdGenerator;
+	}
 
 	public void setCacheManager(CacheManager cacheManager) {
 		this.cacheManager = cacheManager;
@@ -57,30 +73,23 @@ public class ShiroSessionDao extends AbstractSessionDAO  {
 	}
 
 	protected Cache<Serializable, Session> createActiveSessionsCache() {
-		Cache<Serializable, Session> cache = null;
 		CacheManager mgr = getCacheManager();
 		String name = getActiveSessionsCacheName();
-		if (mgr != null) {
-			cache = mgr.getCache(name);
-		}
 		if (mgr == null) {
-//			setCacheManager(new MemoryConstrainedCacheManager());
-//			cache = getCacheManager().getCache(name);
+			throw new IllegalArgumentException("CacheManager cannot be null ");
 		}
-		return cache;
+		return mgr.getCache(name);
 	}
 
 	@Override
 	public Serializable create(Session session) {
-		Serializable sessionId = super.create(session);
-		storeSession(session, sessionId);
-		return sessionId;
-	}
-
-	@Override
-	protected Serializable doCreate(Session session) {
 		Serializable sessionId = generateSessionId(session);
-		assignSessionId(session, sessionId);
+		((SimpleSession) session).setId(sessionId);
+		if (sessionId == null) {
+			String msg = "sessionId returned from doCreate implementation is null.  Please verify the implementation.";
+			throw new IllegalStateException(msg);
+		}
+		storeSession(session, sessionId);
 		return sessionId;
 	}
 
@@ -94,14 +103,9 @@ public class ShiroSessionDao extends AbstractSessionDAO  {
 			}
 		}
 		if (s == null) {
-			s = super.readSession(sessionId);
+			throw new UnknownSessionException("There is no session with id [" + sessionId + "]");
 		}
 		return s;
-	}
-
-	@Override
-	protected Session doReadSession(Serializable sessionId) {
-		return getActiveSessionsCacheLazy().get(sessionId);
 	}
 
 	@Override
@@ -137,13 +141,13 @@ public class ShiroSessionDao extends AbstractSessionDAO  {
 		Collection<Session> s = Collections.emptySet();
 		Cache<Serializable, Session> cache = getActiveSessionsCacheLazy();
 		Iterator<Entry<Serializable, Session>> iterator = cache.iterator();
-		
+
 		for (; iterator.hasNext();) {
-			 Entry<Serializable, Session> en = iterator.next();
+			Entry<Serializable, Session> en = iterator.next();
 			System.out.println(en.getKey());
-			
+
 		}
-		iterator.forEachRemaining((c)->{
+		iterator.forEachRemaining((c) -> {
 			s.add(c.getValue());
 		});
 		return s;
@@ -158,6 +162,14 @@ public class ShiroSessionDao extends AbstractSessionDAO  {
 			return;
 		}
 		cache.put(sessionId, session);
+	}
+
+	protected Serializable generateSessionId(Session session) {
+		if (this.sessionIdGenerator == null) {
+			String msg = "sessionIdGenerator attribute has not been configured.";
+			throw new IllegalStateException(msg);
+		}
+		return this.sessionIdGenerator.generateId(session);
 	}
 
 }

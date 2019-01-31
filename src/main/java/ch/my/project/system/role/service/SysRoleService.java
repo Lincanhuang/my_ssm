@@ -14,9 +14,15 @@ import ch.my.project.system.role.repository.SysRoleRepository;
 public class SysRoleService {
 	@Resource
 	public SysRoleRepository sysRoleRepository;
+	
 	@Cacheable(value="cameraCache")
 	public List<SysRole> listRolesByUserId(Long userId) {
 		return sysRoleRepository.findBySysUsersId(userId);
+	}
+	
+	@Cacheable(value="cameraCache")
+	public List<SysRole> listAll() {
+		return sysRoleRepository.findAll();
 	}
 
 }

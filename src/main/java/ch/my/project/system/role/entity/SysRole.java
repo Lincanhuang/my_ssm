@@ -10,6 +10,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import ch.my.framework.entity.AbstractEntity;
 import ch.my.project.system.menu.entity.SysMenu;
 import ch.my.project.system.user.entity.SysUser;
@@ -26,13 +28,14 @@ public class SysRole extends AbstractEntity {
     
 	private Boolean available;
 	
-	
+	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(name = "sys_user_role",
           joinColumns = {@JoinColumn(name = "roleId")},
           inverseJoinColumns = {@JoinColumn(name = "userId")})
 	private Set<SysUser> sysUsers = new LinkedHashSet<>();
 	
+	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(name = "sys_role_menu",
           joinColumns = {@JoinColumn(name = "roleId")},

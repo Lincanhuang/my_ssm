@@ -112,6 +112,13 @@
 <!-- 	    </aop:aspect>   -->
 <!-- 	</aop:config>  -->
 <!-- <bean class="config.SpringDataJpaConfig" />  -->
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
+	    <property name="proxyTargetClass" value="true" />
+	</bean>
+	
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+	    <property name="securityManager" ref="securityManager"/>
+	</bean>
 
 <!--     <mvc:default-servlet-handler default-servlet-name="所使用的Web服务器默认使用的Servlet名称" /> -->
     <mvc:default-servlet-handler/>
