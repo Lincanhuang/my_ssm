@@ -53,7 +53,6 @@
         </property>
     	<property name="viewResolvers">
     		<list>
-    			<ref bean="viewResolverCommon"/>
     			<ref bean="JspViewResolver"/>
     		</list>
     	</property>
@@ -71,22 +70,15 @@
 		</property>
 	</bean>
     
-    <bean id="viewResolverCommon" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <!-- viewResolver, 视图解析器，解析jsp默认使用jstl标签，classpath得有jstl的包-->
+    <bean id="JspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/views/" />
 		<property name="suffix" value=".jsp" />
 <!--			可为空,方便实现自已的依据扩展名来选择视图解释类的逻辑-->
-		<property name="viewClass" value="org.springframework.web.servlet.view.InternalResourceView"/>
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
 		<property name="order" value="2" />
 	</bean>
     
-    <!-- viewResolver, 视图解析器，解析jsp默认使用jstl标签，classpath得有jstl的包-->
-    <bean id="JspViewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-<!--         <property name="viewName" value="filt"/> -->
-        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
-        <property name="prefix" value="/WEB-INF/views/"/>
-        <property name="suffix" value=".jsp"/>
-        <property name="order" value="1"/>
-    </bean>
     
     <!-- localeResolver,区域解析器，用于支持国际化 -->
     <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver"/>
@@ -128,7 +120,6 @@
     <!--     扫描指定包下的全部的标有@Component的类(包含子注解@Service,@Reposity等 )，并注册成bean 
     use-default-filters="false"不自动扫描所有，此时include-filter才有效果-->
     <context:component-scan base-package="ch.my.**.controller" use-default-filters="false" >
-<!--     包含  context:include-filter  排除context:exclude-filter-->
     	<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
     
